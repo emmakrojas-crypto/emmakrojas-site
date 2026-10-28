@@ -352,3 +352,8 @@ body.ekr-dark .ekr .pf .prow .ptag[aria-pressed="false"]{color:#EEEAE3!important
 
 /* always reserve the scrollbar space, so pages never shift sideways when a scrollbar appears */
 html{scrollbar-gutter:stable!important}
+
+/* burnt covers with a real cutout: the page (or the desk) shows through where the board burnt away */
+.ekr .ekr-face.is-cut{background:transparent!important}
+.ekr .ekr-face.is-cut .f-full{filter:drop-shadow(.5cqw .2cqw .7cqw rgba(0,0,0,.45))}
+.ekr .ekr-face.ekr-back.is-cut .f-full{filter:drop-shadow(-.5cqw .2cqw .7cqw rgba(0,0,0,.45))}

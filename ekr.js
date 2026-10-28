@@ -164,7 +164,7 @@
       if (spec) {
         var k = spec.k, src = spec.src ? url(spec.src) : '';
         if (k === 'scan') {
-          cls = 'is-scan';
+          cls = 'is-scan' + (spec.cut ? ' is-cut' : '') + (spec.center ? ' is-cover-plain' : '');
           inner += '<img class="f-full" data-src="' + esc(src) + '" alt="">';
           if (spec.title) inner += label(spec);
         } else if (k === 'cover') {
@@ -209,7 +209,9 @@
       book.className = 'ekr-book ' + B.cls;
       book.style.transform = 'translateX(' + (s === 0 ? '-25%' : '0%') + ')';
       // the left page only exists once the cover has landed: while the cover swings open or shut, the desk shows on the left
-      baseL.style.visibility = (s === 0 || st.moving.indexOf(0) >= 0) ? 'hidden' : 'visible';
+      // (and a cut-out inside cover shows the desk through its burnt edge, not a page)
+      var cutIn = S[1] && S[1].L && S[1].L.cut;
+      baseL.style.visibility = (s === 0 || st.moving.indexOf(0) >= 0 || (cutIn && (s <= 1 || st.moving.indexOf(1) >= 0))) ? 'hidden' : 'visible';
       leaves.forEach(function (lf, i) {
         var turned = i < s, z = st.moving.indexOf(i) >= 0 ? 200 : (turned ? 20 + i : 20 + N - i);
         lf.style.transform = 'rotateY(' + (turned ? -180 : 0) + 'deg)';
