@@ -208,7 +208,8 @@
       setDesk(st.p);
       book.className = 'ekr-book ' + B.cls;
       book.style.transform = 'translateX(' + (s === 0 ? '-25%' : '0%') + ')';
-      baseL.style.visibility = (s === 0 && idle) ? 'hidden' : 'visible';
+      // the left page only exists once the cover has landed: while the cover swings open or shut, the desk shows on the left
+      baseL.style.visibility = (s === 0 || st.moving.indexOf(0) >= 0) ? 'hidden' : 'visible';
       leaves.forEach(function (lf, i) {
         var turned = i < s, z = st.moving.indexOf(i) >= 0 ? 200 : (turned ? 20 + i : 20 + N - i);
         lf.style.transform = 'rotateY(' + (turned ? -180 : 0) + 'deg)';
