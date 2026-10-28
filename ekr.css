@@ -357,3 +357,8 @@ html{scrollbar-gutter:stable!important}
 .ekr .ekr-face.is-cut{background:transparent!important}
 .ekr .ekr-face.is-cut .f-full{filter:drop-shadow(.5cqw .2cqw .7cqw rgba(0,0,0,.45))}
 .ekr .ekr-face.ekr-back.is-cut .f-full{filter:drop-shadow(-.5cqw .2cqw .7cqw rgba(0,0,0,.45))}
+
+/* hardcover spine strip (Mariner's Brine): sits beside the cover while the book is shut */
+.ekr .ekr-spine{position:absolute;top:0;height:100%;z-index:1;background-position:center;background-size:100% 100%;background-repeat:no-repeat;box-shadow:0 2.4vw 3vw -1.4vw rgba(40,28,34,.45)}
+/* a cover with a spine beside it has no gutter shadow at its fold */
+.ekr .ekr-face.has-spine .shade-r{display:none}

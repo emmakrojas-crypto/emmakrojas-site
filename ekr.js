@@ -129,6 +129,7 @@
       '<button class="end-btn serif tape-clip"></button>' +
       '<svg viewBox="0 0 120 120" style="position:absolute;right:9%;bottom:8%;width:16cqw;height:16cqw;overflow:visible" aria-hidden="true"><path d="M60 10 C62 40 70 50 104 56 C70 60 62 70 60 104 C58 70 50 60 16 56 C50 50 58 40 60 10Z" style="fill:none;stroke:#F7F4EF;stroke-width:2"></path></svg>' +
       '<div class="shade-r"></div></div>' +
+      '<div class="ekr-spine" hidden></div>' +
       '<div class="leaves"></div>' +
       '<button class="ekr-edge" aria-label="Next page" style="position:absolute;top:0;right:0;width:7%;height:100%;z-index:300;background:none;border:0;cursor:e-resize"></button>' +
       '<button class="ekr-edge-l" aria-label="Previous page" style="position:absolute;top:0;left:0;width:7%;height:100%;z-index:300;background:none;border:0;cursor:w-resize"></button>' +
@@ -164,7 +165,7 @@
       if (spec) {
         var k = spec.k, src = spec.src ? url(spec.src) : '';
         if (k === 'scan') {
-          cls = 'is-scan' + (spec.cut ? ' is-cut' : '') + (spec.center ? ' is-cover-plain' : '');
+          cls = 'is-scan' + (spec.cut ? ' is-cut' : '') + (spec.center ? ' is-cover-plain' : '') + (spec.spine ? ' has-spine' : '');
           inner += '<img class="f-full" data-src="' + esc(src) + '" alt="">';
           if (spec.title) inner += label(spec);
         } else if (k === 'cover') {
@@ -212,6 +213,13 @@
       // (and a cut-out inside cover shows the desk through its burnt edge, not a page)
       var cutIn = S[1] && S[1].L && S[1].L.cut;
       baseL.style.visibility = (s === 0 || st.moving.indexOf(0) >= 0 || (cutIn && (s <= 1 || st.moving.indexOf(1) >= 0))) ? 'hidden' : 'visible';
+      // hardcover spine: the board hinges at the groove, the spine strip stays put beside it while the book is shut
+      var c0 = S[0] && S[0].R, spineEl = $('.ekr-spine');
+      if (c0 && c0.spine) {
+        spineEl.style.backgroundImage = 'url("' + url(c0.spine) + '")';
+        spineEl.style.width = r2(c0.spineW * 50 + .2) + '%'; /* tucks a hair under the cover so no seam shows */ spineEl.style.left = r2(50 - c0.spineW * 50) + '%';
+      }
+      spineEl.hidden = !(c0 && c0.spine && (s === 0 || st.moving.indexOf(0) >= 0));
       leaves.forEach(function (lf, i) {
         var turned = i < s, z = st.moving.indexOf(i) >= 0 ? 200 : (turned ? 20 + i : 20 + N - i);
         lf.style.transform = 'rotateY(' + (turned ? -180 : 0) + 'deg)';
