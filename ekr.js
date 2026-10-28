@@ -8,7 +8,7 @@
   function url(p) { return /^https?:|^\//.test(p) ? p : BASE + p; }
 
   var NAV = [['about', '/about'], ['portfolio', '/portfolio'], ['experience', '/experience'], ['r\u00e9sum\u00e9', '/resume'], ['testimonials', '/testimonials'], ['contact', '/contact']];
-  var EMAIL = 'emmakrojas@gmail.com', LI = 'https://www.linkedin.com/in/emmakrojas', IG = 'https://www.instagram.com/rojas_atelier_';
+  var EMAIL = 'emmakrojas@gmail.com', LI = 'https://www.linkedin.com/in/emmakrojas', IG = 'https://www.instagram.com/atelier_rojas_';
   var I_LI = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.75" y="2.75" width="18.5" height="18.5" rx="3.5"></rect><path d="M7.6 10.6V17"></path><circle cx="7.6" cy="7.4" r="1.05" class="f"></circle><path d="M11.2 17v-6.4M11.2 13.4c0-1.8 1.2-2.9 2.8-2.9s2.7 1.1 2.7 2.9V17"></path></svg>';
   var I_IG = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.2"></rect><circle cx="12" cy="12" r="4.2"></circle><circle cx="17.3" cy="6.7" r="1.05" class="f"></circle></svg>';
   var I_MAIL = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.75" y="5.25" width="18.5" height="13.5" rx="1.6"></rect><path d="M3.4 6.6 12 13l8.6-6.4"></path></svg>';
@@ -77,6 +77,9 @@
         '<a class="ico" href="' + IG + '" aria-label="Instagram">' + I_IG + '</a></nav></footer></div>');
       main.parentNode.insertBefore(ftr, main.nextSibling);
     }
+    var mq = window.matchMedia('(max-width: 900px)');
+    var fold = function () { document.querySelectorAll('details.res-d:not([data-keep])').forEach(function (d) { d.open = !mq.matches; }); };
+    fold(); if (mq.addEventListener) mq.addEventListener('change', fold);
     var pf = document.querySelector('[data-ekr-portfolio]');
     if (pf && !pf.__ekr) { pf.__ekr = true; loadBooks(pf); }
   }
@@ -138,6 +141,9 @@
     var book = $('.ekr-book'), leavesEl = $('.leaves'), baseL = $('.ekr-base-left');
     var flapWrap = $('.flap-wrap'), flapBtn = $('.flap'), zoomEl = $('.zoom');
     var leaves = [];
+    // the zoom view lives on the page body so nothing (header, sections) can sit on top of it
+    var zwrap = document.createElement('div'); zwrap.className = 'ekr ekr-zoom'; document.body.appendChild(zwrap); zwrap.appendChild(zoomEl);
+    zoomEl.addEventListener('click', function () { zoomEl.hidden = true; document.documentElement.style.overflow = ''; });
 
     function bk() { return BOOKS[st.p]; }
     function sp() { return bk().spreads; }
@@ -314,11 +320,11 @@
         var F = sp()[st.s] && sp()[st.s].flap;
         if (F && (st.flap || st.flapBusy) && t.closest('.ekr-leaf') && +t.closest('.ekr-leaf').getAttribute('data-i') === st.s) src = url(F.under);
         var im = zoomEl.querySelector('img'); im.src = src; im.alt = t.getAttribute('data-alt') || '';
-        zoomEl.setAttribute('aria-label', im.alt); zoomEl.hidden = false;
+        zoomEl.setAttribute('aria-label', im.alt); zoomEl.hidden = false; document.documentElement.style.overflow = 'hidden';
       }
     });
     document.addEventListener('keydown', function (e) {
-      if (!zoomEl.hidden && e.key === 'Escape') { zoomEl.hidden = true; return; }
+      if (!zoomEl.hidden && e.key === 'Escape') { zoomEl.hidden = true; document.documentElement.style.overflow = ''; return; }
       if (e.target && /input|textarea/i.test(e.target.tagName)) return;
       if (e.key === 'ArrowRight') go(st.s + 1); else if (e.key === 'ArrowLeft') go(st.s - 1);
     });

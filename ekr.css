@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Dawning+of+a+New+Day&display=swap');
 /* Emma K. Rojas site styles. Loaded on every page from the site folder. */
 .ekr{--paper:#EEEAE3;--card:#F6F3EE;--ink:#231F21;--slate:#4E5661;--rose:#8E6B65;--tape:rgba(232,221,182,.88);
   position:relative;min-height:100vh;box-sizing:border-box;background:var(--paper);color:var(--ink);font-family:'Libre Baskerville',Georgia,serif;overflow:hidden}
@@ -209,7 +210,7 @@
 .ekr .ppick{display:flex;margin-top:14px}
 .ekr .tabs-m{display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-start;gap:5px;margin-top:7px;width:100%;padding-inline:3%;box-sizing:border-box}
 .ekr .tabs-m .tab{writing-mode:horizontal-tb;flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;padding:7px 9px 8px;border-radius:0 0 8px 8px;font-size:11.5px;letter-spacing:.02em}
-.ekr main{justify-content:center!important;padding-block:24px}
+.ekr .pf main{justify-content:center!important;padding-block:24px}
 .ekr-book,.ekr-book.bk-land{width:100%!important}
 .ekr-book .tabs{display:none!important}
 .ekr-edge,.ekr-edge-l{width:12%!important}
@@ -282,3 +283,50 @@ body.ekr-site .section-background{display:none!important}
 /* make sure no Squarespace section colour shows behind our pages */
 body.ekr-site .section-border,body.ekr-site .section-background-overlay,body.ekr-site .section-background-content{background:transparent!important}
 body.ekr-site .page-section .content-wrapper,body.ekr-site .page-section .fluid-engine,body.ekr-site .fe-block,body.ekr-site .sqs-block,body.ekr-site .sqs-block-content{background-color:transparent!important}
+
+/* fonts load here too, so they never depend on the code injection alone */
+/* (the @import itself is placed at the very top of ekr.css by the build) */
+
+/* no Squarespace top spacing above our pages */
+body.ekr-site #page,body.ekr-site #sections,body.ekr-site #page .page-section:first-child{padding-top:0!important;margin-top:0!important}
+.ekr .mlogo{padding:28px 20px 16px!important}
+/* let shadows breathe instead of being cut at the section edge */
+.ekr.ekr-full{overflow-x:clip!important;overflow-y:visible!important}
+.page-section:has(.ekr-full),.page-section:has(.ekr-full) .content-wrapper,.page-section:has(.ekr-full) .content,.page-section:has(.ekr-full) .fluid-engine,.page-section:has(.ekr-full) .fe-block,.page-section:has(.ekr-full) .sqs-block,.page-section:has(.ekr-full) .sqs-block-content{overflow:visible!important}
+
+/* zoom view sits above everything */
+.ekr.ekr-zoom{position:relative;z-index:100000}
+
+/* contact form: every piece of text in the site's fonts */
+.ekr-site .sqs-block-form,.ekr-site .sqs-block-form *:not(input):not(textarea):not(select):not(option){font-family:'Courier Prime','Courier New',monospace!important}
+.ekr-site .sqs-block-form .form-item :is(legend,label,span,div,p,.caption,.description,.title){font-size:13.5px!important;color:#4E5661!important;text-transform:none!important;letter-spacing:0!important;font-weight:400!important}
+.ekr-site .sqs-block-form :is(.form-submission-text,.form-submission-html,.form-submission-text *,.form-submission-html *){font-family:'Libre Baskerville',Georgia,serif!important;font-style:italic!important;font-size:19px!important;line-height:1.6!important;color:#231F21!important}
+
+/* résumé: sections fold on phones */
+.ekr details.blk{display:block}
+.ekr .blk-in{display:flex;flex-direction:column;gap:6px}
+.ekr .res-d > summary{list-style:none;cursor:default;pointer-events:none}
+.ekr .res-d > summary::-webkit-details-marker{display:none}
+@media (max-width: 900px){
+  .ekr .sgrid{display:flex!important;flex-direction:column;gap:0!important}
+  .ekr .sgrid > div{display:contents}
+  .ekr .res-about{order:1}.ekr .res-work-experience{order:2}.ekr .res-relevant-projects{order:3}.ekr .res-education{order:4}.ekr .res-skills{order:5}.ekr .res-languages{order:6}.ekr .res-accolades{order:7}.ekr .res-contact{order:8}
+  .ekr details.res-d{margin-bottom:4px}
+  .ekr .res-d > summary{pointer-events:auto;cursor:pointer;display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:12px 0}
+  .ekr .res-d > summary .sh{margin:0!important}
+  .ekr .res-d > summary::after{content:'+';font-family:'Courier Prime','Courier New',monospace;color:var(--rose);font-size:20px;line-height:1}
+  .ekr .res-d[open] > summary::after{content:'\2212'}
+  .ekr .res-d[data-keep] > summary{pointer-events:none}
+  .ekr .res-d[data-keep] > summary::after{content:none}
+  .ekr .res-d .blk-in{padding-bottom:18px}
+  .ekr .res-about{margin-bottom:18px!important}
+}
+
+/* home hero: taller, narrower, with a strip of paper on the right */
+.ekr .land-r .hero img{object-position:50% 8%!important}
+@media (min-width: 821px){
+  .ekr .land-r{width:min(66vh,42vw)!important;margin-right:max(28px,3.5vw)}
+}
+@media (max-width: 820px){
+  .ekr .land-r{aspect-ratio:4/5!important;width:calc(100% - 40px)!important;margin:0 20px}
+}
