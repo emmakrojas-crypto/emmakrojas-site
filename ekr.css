@@ -75,7 +75,8 @@
 .ekr .mlogo{display:block!important;order:-2;padding:28px 20px 16px}
 .ekr .land-l > .logo{display:none}}
 .ekr .about{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);gap:56px 7vw;align-items:start;padding-block:64px 24px}
-@media (max-width: 900px){.ekr .about,.ekr .about{padding-block:32px 24px;gap:36px}
+@media (max-width: 900px){.ekr .about{grid-template-columns:minmax(0,1fr)}
+.ekr .about{padding-block:32px 24px;gap:36px}
 .ekr .about figure{order:-1;width:46%;max-width:210px;margin-top:0!important;justify-self:center}}
 .ekr .xgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:40px 30px;align-items:start}
 .ekr .xcard{display:flex;flex-direction:column;gap:10px}
@@ -270,7 +271,7 @@ body.ekr-site .section-background{display:none!important}
 .ekr .pf{min-height:calc(100svh - 90px)!important;padding-top:10px!important}
 
 /* ---------- Contact page: Squarespace form block styled as the taped card ---------- */
-.ekr-site .sqs-block-form .sqs-block-content{position:relative;background:#F6F3EE;padding:clamp(26px,4vw,48px)!important;box-shadow:0 1px 2px rgba(35,31,33,.1),0 26px 50px -28px rgba(35,31,33,.45)}
+.ekr-site .sqs-block-form .sqs-block-content{position:relative;background:#F6F3EE!important;padding:clamp(26px,4vw,48px)!important;box-shadow:0 1px 2px rgba(35,31,33,.1),0 26px 50px -28px rgba(35,31,33,.45)}
 .ekr-site .sqs-block-form .sqs-block-content::before{content:'';position:absolute;left:calc(50% - 80px);top:-18px;width:160px;height:40px;transform:rotate(-2deg);background:url('site/tape-3.png') center/100% 100% no-repeat;z-index:2}
 .ekr-site .sqs-block-form :is(.form-title,.field-list,label,legend,.title,.description,p){font-family:'Courier Prime','Courier New',monospace!important;color:#4E5661!important;font-size:13.5px!important;letter-spacing:0!important;text-transform:none!important}
 .ekr-site .sqs-block-form :is(input[type=text],input[type=email],input[type=tel],textarea,select){font-family:'Libre Baskerville',Georgia,serif!important;font-size:16px!important;color:#231F21!important;background:#EDE9E2!important;border:0!important;border-radius:0!important;padding:13px 14px!important;box-shadow:none!important}
@@ -278,3 +279,6 @@ body.ekr-site .section-background{display:none!important}
 .ekr-site .sqs-block-form :is(button[type=submit],input[type=submit],.form-submit-button){position:relative;font-family:'Courier Prime','Courier New',monospace!important;font-size:15px!important;color:#231F21!important;text-transform:none!important;letter-spacing:0!important;border:0!important;border-radius:0!important;padding:12px 26px 10px!important;background:url('site/tape-3.png') center/100% 100% no-repeat!important;transform:rotate(-1.5deg);transition:transform .3s}
 .ekr-site .sqs-block-form :is(button[type=submit],input[type=submit],.form-submit-button):hover{transform:rotate(0);opacity:1!important}
 .ekr [hidden]{display:none!important}
+/* make sure no Squarespace section colour shows behind our pages */
+body.ekr-site .section-border,body.ekr-site .section-background-overlay,body.ekr-site .section-background-content{background:transparent!important}
+body.ekr-site .page-section .content-wrapper,body.ekr-site .page-section .fluid-engine,body.ekr-site .fe-block,body.ekr-site .sqs-block,body.ekr-site .sqs-block-content{background-color:transparent!important}
