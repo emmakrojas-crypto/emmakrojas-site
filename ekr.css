@@ -362,3 +362,7 @@ html{scrollbar-gutter:stable!important}
 .ekr .ekr-spine{position:absolute;top:0;height:100%;z-index:1;background-position:center;background-size:100% 100%;background-repeat:no-repeat;box-shadow:0 2.4vw 3vw -1.4vw rgba(40,28,34,.45)}
 /* a cover with a spine beside it has no gutter shadow at its fold */
 .ekr .ekr-face.has-spine .shade-r{display:none}
+/* pages overlap a hair at the spine so no sliver of desk ever shows between them */
+.ekr .ekr-leaf > .ekr-face{left:-1px}
+.ekr .ekr-book > .ekr-base-left{width:calc(50% + 1px)!important}
+.ekr .ekr-book > .ekr-base-right{left:calc(50% - 1px)!important;width:calc(50% + 1px)!important}

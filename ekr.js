@@ -224,6 +224,10 @@
         var turned = i < s, z = st.moving.indexOf(i) >= 0 ? 200 : (turned ? 20 + i : 20 + N - i);
         lf.style.transform = 'rotateY(' + (turned ? -180 : 0) + 'deg)';
         lf.style.zIndex = z;
+        // only the open spread's two leaves (plus the neighbours while a page is turning) are drawn,
+        // so no page further down the stack can peek through at the spine
+        var near = (i === s - 1 || i === s) || (!idle && i >= s - 2 && i <= s + 1) || st.moving.indexOf(i) >= 0;
+        lf.style.visibility = near ? 'visible' : 'hidden';
         var f = lf.children[0], b = lf.children[1];
         f.style.pointerEvents = (!turned && i === s && idle) ? 'auto' : 'none';
         b.style.pointerEvents = (turned && i === s - 1 && idle) ? 'auto' : 'none';
