@@ -21,12 +21,42 @@
   }
   function el(html) { var d = document.createElement('div'); d.innerHTML = html.trim(); return d.firstChild; }
 
+
+  /* Squarespace paints section colours on several wrappers; clear every one so the page colour shows */
+  function clearBackgrounds() {
+    var blocks = document.querySelectorAll('.ekr-page');
+    var seen = [];
+    blocks.forEach(function (b) {
+      var n = b.parentElement;
+      while (n && n !== document.body) {
+        if (seen.indexOf(n) < 0) {
+          seen.push(n);
+          n.style.setProperty('background-color', 'transparent', 'important');
+          n.style.setProperty('background-image', 'none', 'important');
+          if (n.classList && n.classList.contains('page-section')) {
+            [].forEach.call(n.querySelectorAll('.section-border, .section-background, .section-background-overlay, .section-divider-display'), function (x) { x.style.setProperty('display', 'none', 'important'); });
+          }
+        }
+        n = n.parentElement;
+      }
+    });
+    // every other section on our pages too (e.g. the contact form section)
+    document.querySelectorAll('#page .page-section').forEach(function (sec) {
+      sec.style.setProperty('background-color', 'transparent', 'important');
+      [].forEach.call(sec.querySelectorAll('.section-border, .section-background, .section-background-overlay'), function (x) { x.style.setProperty('display', 'none', 'important'); });
+    });
+    ['siteWrapper', 'page', 'sections'].forEach(function (id) { var e = document.getElementById(id); if (e) { e.style.setProperty('background-color', 'transparent', 'important'); e.style.setProperty('background-image', 'none', 'important'); } });
+    document.documentElement.style.setProperty('background-color', document.body.classList.contains('ekr-desk') ? '#8BA2A6' : '#EEEAE3', 'important');
+  }
+
   function start() {
     var page = document.querySelector('.ekr-page');
     var kind = page ? page.getAttribute('data-page') : '';
     var editing = /\/config\b/.test(location.pathname) || document.body.classList.contains('sqs-edit-mode-active');
     document.body.classList.add('ekr-site');
     if (kind === 'portfolio') document.body.classList.add('ekr-desk');
+    clearBackgrounds();
+    setTimeout(clearBackgrounds, 600); setTimeout(clearBackgrounds, 2000);
     // images inside our blocks
     document.querySelectorAll('[data-ekr-src]').forEach(function (im) { im.src = url(im.getAttribute('data-ekr-src')); });
     var main = document.querySelector('#page') || document.querySelector('main');
