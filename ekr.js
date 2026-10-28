@@ -46,7 +46,7 @@
       [].forEach.call(sec.querySelectorAll('.section-border, .section-background, .section-background-overlay'), function (x) { x.style.setProperty('display', 'none', 'important'); });
     });
     ['siteWrapper', 'page', 'sections'].forEach(function (id) { var e = document.getElementById(id); if (e) { e.style.setProperty('background-color', 'transparent', 'important'); e.style.setProperty('background-image', 'none', 'important'); } });
-    document.documentElement.style.setProperty('background-color', document.body.classList.contains('ekr-desk') ? '#8BA2A6' : '#EEEAE3', 'important');
+    document.documentElement.style.setProperty('background-color', document.body.classList.contains('ekr-desk') ? (document.body.style.getPropertyValue('--ekr-desk') || '#8BA2A6') : '#EEEAE3', 'important');
   }
 
   function start() {
@@ -93,12 +93,21 @@
 
   var PL = [['luz', 'La Luz Que No Se Apaga'], ['mb', 'Mariner\u2019s Brine'], ['rr', 'Ripe to Rot'], ['p3', 'Anatomy of Fire'], ['lt', 'The Little Things']];
   var TC = {
-    luz: [['#222A35', '#F2EBE1'], ['#B8973F', '#1F1B1E'], ['#8F5A62', '#F2EBE1'], ['#2E3D42', '#F2EBE1'], ['#A16437', '#F2EBE1']],
+    luz: [['#E2E3D3', '#1F1B1E'], ['#B8973F', '#1F1B1E'], ['#8F5A62', '#F2EBE1'], ['#A16437', '#F2EBE1'], ['#5E7A80', '#F2EBE1']],
     mb: [['#3B3A3E', '#F2EBE1'], ['#B0457C', '#F2EBE1'], ['#D8B4C5', '#1F1B1E']],
-    rr: [['#8E2A2E', '#F2EBE1'], ['#D9A93B', '#1F1B1E'], ['#35463D', '#F2EBE1']],
-    p3: [['#1F1B1E', '#F2EBE1'], ['#5A3A2E', '#F2EBE1'], ['#8A8580', '#1F1B1E'], ['#B5562A', '#F2EBE1']],
+    rr: [['#D9A93B', '#1F1B1E'], ['#8FB2AD', '#1F1B1E'], ['#E07A2E', '#1F1B1E']],
+    p3: [['#B5562A', '#F2EBE1'], ['#8A8580', '#1F1B1E'], ['#D9CFC4', '#1F1B1E'], ['#E0874A', '#1F1B1E']],
     lt: [['#EEEAE3', '#1F1B1E'], ['#D9C4BE', '#1F1B1E'], ['#E6DAB0', '#1F1B1E']]
   };
+  /* desk colour behind each sketchbook: change any of these to set the mood of a project */
+  var DESK = { luz: '#1D2532', mb: '#93A6A3', rr: '#55282B', p3: '#3A3735', lt: '#C8BBA7' };
+  var DARK = { luz: 1, rr: 1, p3: 1 };   // dark colours get light menu text
+  function setDesk(p) {
+    var c = DESK[p] || '#8BA2A6';
+    document.body.style.setProperty('--ekr-desk', c);
+    document.body.classList.toggle('ekr-dark', !!DARK[p]);
+    document.documentElement.style.setProperty('background-color', c, 'important');
+  }
   var HASH = { luz: 'luz', 'la-luz': 'luz', mb: 'mb', 'mariners-brine': 'mb', rr: 'rr', 'ripe-to-rot': 'rr', p3: 'p3', 'anatomy-of-fire': 'p3', lt: 'lt', little: 'lt', 'the-little-things': 'lt' };
   function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
   function r2(x) { return Math.round(x * 100) / 100; }
@@ -196,6 +205,7 @@
 
     function render() {
       var B = bk(), S = B.spreads, N = S.length - 1, s = st.s, idle = st.moving.length === 0;
+      setDesk(st.p);
       book.className = 'ekr-book ' + B.cls;
       book.style.transform = 'translateX(' + (s === 0 ? '-25%' : '0%') + ')';
       baseL.style.visibility = (s === 0 && idle) ? 'hidden' : 'visible';

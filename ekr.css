@@ -226,7 +226,8 @@
 
 /* ---------- Squarespace integration ---------- */
 body.ekr-site{background-color:#EEEAE3!important;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .2 0 0 0 0 .15 0 0 0 0 .14 0 0 0 .13 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")!important}
-body.ekr-site.ekr-desk{background-color:#8BA2A6!important}
+body.ekr-site.ekr-desk{background-color:var(--ekr-desk,#8BA2A6)!important;transition:background-color .6s ease}
+html{transition:background-color .6s ease}
 /* hide Squarespace's own header and footer: the site uses its own */
 body.ekr-site #header,body.ekr-site .header-announcement-bar-wrapper,body.ekr-site #footer-sections,body.ekr-site footer.sections{display:none!important}
 body.ekr-site #siteWrapper,body.ekr-site #page,body.ekr-site .page-section,body.ekr-site .section-background{background:transparent!important}
@@ -325,8 +326,26 @@ body.ekr-site #page,body.ekr-site #sections,body.ekr-site #page .page-section:fi
 /* home hero: taller, narrower, with a strip of paper on the right */
 .ekr .land-r .hero img{object-position:50% 8%!important}
 @media (min-width: 821px){
-  .ekr .land-r{width:min(66vh,42vw)!important;margin-right:max(28px,3.5vw)}
+  .ekr .land-r{width:min(75vh,48vw)!important;margin-right:max(28px,3.5vw)}
 }
 @media (max-width: 820px){
   .ekr .land-r{aspect-ratio:4/5!important;width:calc(100% - 40px)!important;margin:0 20px}
 }
+
+/* type rhythm: don't inherit Squarespace's tall line spacing */
+.ekr{line-height:normal}
+.ekr .mono-s{line-height:1.6}
+@media (max-width: 900px){
+  .ekr .sheet > header{margin:18px 0 26px!important;gap:8px!important}
+  .ekr .sheet > header p{line-height:1.6!important;font-size:12.5px!important;letter-spacing:.02em!important}
+}
+
+/* dark desk colours (La Luz, Ripe to Rot, Anatomy of Fire): light text on the desk */
+body.ekr-dark .ekr-hdr .nav a{color:#EEEAE3!important;transition:color .3s}
+body.ekr-dark .ekr-hdr .nav a:hover,body.ekr-dark .ekr-hdr .nav a.on{color:#231F21!important}
+body.ekr-dark .ekr-hdr .logo img{filter:invert(.93)}
+body.ekr-dark .ekr-hdr .mnav summary{color:#EEEAE3}
+body.ekr-dark .ekr-hdr .mpanel a{color:#231F21!important}
+body.ekr-dark .ekr .pf .where,body.ekr-dark .ekr .pf .rot-hint{color:#EEEAE3!important}
+body.ekr-dark .ekr .pf .arrow path{stroke:#EEEAE3!important}
+body.ekr-dark .ekr .pf .prow .ptag[aria-pressed="false"]{color:#EEEAE3!important;background:rgba(242,238,233,.16)!important}
