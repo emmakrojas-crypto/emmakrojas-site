@@ -349,3 +349,6 @@ body.ekr-dark .ekr-hdr .mpanel a{color:#231F21!important}
 body.ekr-dark .ekr .pf .where,body.ekr-dark .ekr .pf .rot-hint{color:#EEEAE3!important}
 body.ekr-dark .ekr .pf .arrow path{stroke:#EEEAE3!important}
 body.ekr-dark .ekr .pf .prow .ptag[aria-pressed="false"]{color:#EEEAE3!important;background:rgba(242,238,233,.16)!important}
+
+/* always reserve the scrollbar space, so pages never shift sideways when a scrollbar appears */
+html{scrollbar-gutter:stable!important}
