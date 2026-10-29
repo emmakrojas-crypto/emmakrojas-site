@@ -5,7 +5,28 @@
   if (window.__ekr) return; window.__ekr = true;
   var me = document.currentScript || (function () { var s = document.querySelectorAll('script[src*="ekr.js"]'); return s[s.length - 1]; })();
   var BASE = (me && me.src ? me.src : '').replace(/[^\/]*(\?.*)?$/, '');
-  function url(p) { return /^https?:|^\//.test(p) ? p : BASE + p; }
+  // site images are served as WebP (about half the weight); the original jpg/png stay in the repo as a fallback
+  function url(p) { return /^https?:|^\//.test(p) ? p : BASE + (/browser-icon/.test(p) ? p : p.replace(/\.(jpe?g|png)$/i, '.webp')); }
+  // images fade in once they have fully arrived, instead of drawing in line by line
+  function reveal(im) {
+    if (im.complete && im.naturalWidth) return;
+    im.classList.add('ekr-fade', 'ekr-ld');
+    var f = function () { im.classList.remove('ekr-ld'); };
+    im.addEventListener('load', f, { once: true }); im.addEventListener('error', f, { once: true });
+  }
+  // a quiet background loader: warms the cache for pages the visitor is about to reach
+  var warmQ = [], warmN = 0, warmed = {};
+  function warm(list, front) {
+    list.forEach(function (u) { if (u && !warmed[u]) { warmed[u] = 1; front ? warmQ.unshift(u) : warmQ.push(u); } });
+    pump();
+  }
+  function pump() {
+    while (warmN < 2 && warmQ.length) {
+      var u = warmQ.shift(), im = new Image(); warmN++;
+      im.onload = im.onerror = function () { warmN--; setTimeout(pump, 30); };
+      im.src = u;
+    }
+  }
 
   var NAV = [['about', '/about'], ['portfolio', '/portfolio'], ['experience', '/experience'], ['r\u00e9sum\u00e9', '/resume'], ['testimonials', '/testimonials'], ['contact', '/contact']];
   var EMAIL = 'emmakrojas@gmail.com', LI = 'https://www.linkedin.com/in/emmakrojas', IG = 'https://www.instagram.com/atelier_rojas_';
@@ -58,7 +79,7 @@
     clearBackgrounds();
     setTimeout(clearBackgrounds, 600); setTimeout(clearBackgrounds, 2000);
     // images inside our blocks
-    document.querySelectorAll('[data-ekr-src]').forEach(function (im) { im.src = url(im.getAttribute('data-ekr-src')); });
+    document.querySelectorAll('[data-ekr-src]').forEach(function (im) { im.src = url(im.getAttribute('data-ekr-src')); reveal(im); });
     var main = document.querySelector('#page') || document.querySelector('main');
     if (!main || !main.parentNode) return;
     if (kind !== 'home' && !document.querySelector('.ekr-hdr')) {
@@ -199,9 +220,13 @@
     function lazy() {
       leaves.forEach(function (lf, i) {
         if (Math.abs(i - st.s) <= 3 || st.moving.indexOf(i) >= 0) {
-          lf.querySelectorAll('img[data-src]').forEach(function (im) { if (!im.getAttribute('src')) im.src = im.getAttribute('data-src'); });
+          lf.querySelectorAll('img[data-src]').forEach(function (im) { if (!im.getAttribute('src')) { im.src = im.getAttribute('data-src'); reveal(im); } });
         }
       });
+      // the next few spreads load in the background, so turning pages never waits
+      var S = sp(), list = [];
+      for (var k = st.s + 1; k <= st.s + 8 && k < S.length; k++) [S[k].W, S[k].L, S[k].R].forEach(function (f) { if (f && f.src) list.push(url(f.src)); });
+      warm(list, true);
     }
 
     function render() {
@@ -226,7 +251,7 @@
         lf.style.zIndex = z;
         // only the open spread's two leaves (plus the neighbours while a page is turning) are drawn,
         // so no page further down the stack can peek through at the spine
-        var near = (i === s - 1 || i === s) || (!idle && i >= s - 2 && i <= s + 1) || st.moving.indexOf(i) >= 0;
+        var near = (i >= s - 1 && i <= s + 1) ||   /* s + 1 sits under the open page: it shows through the burnt cover */ (!idle && i >= s - 2 && i <= s + 1) || st.moving.indexOf(i) >= 0;
         lf.style.visibility = near ? 'visible' : 'hidden';
         var f = lf.children[0], b = lf.children[1];
         f.style.pointerEvents = (!turned && i === s && idle) ? 'auto' : 'none';
@@ -362,6 +387,12 @@
     }, { passive: true });
 
     buildLeaves(); render();
+    // then the first pages of every other sketchbook, so switching projects is instant too
+    setTimeout(function () {
+      var list = [];
+      Object.keys(BOOKS).forEach(function (k) { (BOOKS[k].spreads || []).slice(0, 3).forEach(function (x) { [x.W, x.L, x.R].forEach(function (f) { if (f && f.src) list.push(url(f.src)); }); }); });
+      warm(list, false);
+    }, 1200);
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
